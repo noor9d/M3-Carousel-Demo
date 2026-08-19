@@ -4,8 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -85,14 +87,14 @@ fun DashboardContent(
         Text(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             text = "Recents",
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleMedium
         )
         CarouselExample_MultiBrowse()
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             text = "Categories",
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleMedium
         )
         Spacer(modifier = Modifier.height(16.dp))
         CategoryGrid(modifier = Modifier.padding(horizontal = 16.dp))
@@ -114,18 +116,23 @@ fun CategoryGrid(modifier: Modifier = Modifier) {
         userScrollEnabled = false
     ) {
         items(categories) { category ->
-            CategoryItem(name = category)
+            CategoryItem(name = category) {}
         }
     }
 }
 
 @Composable
-fun CategoryItem(name: String, modifier: Modifier = Modifier) {
+fun CategoryItem(name: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Surface(
         modifier = modifier.aspectRatio(2.5f),
         shape = MaterialTheme.shapes.large,
         color = MaterialTheme.colorScheme.onPrimary,
-        tonalElevation = 2.dp
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        tonalElevation = 2.dp,
+        onClick = onClick
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -133,7 +140,7 @@ fun CategoryItem(name: String, modifier: Modifier = Modifier) {
         ) {
             Text(
                 text = name,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
@@ -152,7 +159,12 @@ private fun SearchBar(
         color = MaterialTheme.colorScheme.onPrimary,
         modifier = modifier
             .fillMaxWidth()
-            .height(56.dp),
+            .height(56.dp)
+            .border(
+                width = 1.dp,
+                shape = CircleShape,
+                color = MaterialTheme.colorScheme.surfaceVariant
+            ),
     ) {
         Row(
             modifier = Modifier
